@@ -16,23 +16,26 @@
         overflow: hidden;
         font-family: 'Segoe UI', sans-serif;
         text-align: center;
+        padding: 0 1rem;
+        box-sizing: border-box;
     }
 
     .org-name {
-        font-size: 5rem;
+        font-size: clamp(2rem, 6vw, 5rem);
         font-weight: bold;
         color: #00eaff;
         margin-bottom: 20px;
+        word-break: break-word;
     }
 
     h1 {
-        font-size: 3rem;
+        font-size: clamp(1.5rem, 4.5vw, 3rem);
         color: #fff;
         margin-bottom: 10px;
     }
 
     p {
-        font-size: 1.2rem;
+        font-size: clamp(1rem, 3vw, 1.2rem);
         color: #bbb;
     }
 
@@ -41,6 +44,16 @@
         top: 0;
         left: 0;
         z-index: -1;
+    }
+
+    @media (max-width: 600px) {
+        body {
+            flex-direction: column;
+            padding: 1rem;
+        }
+        .org-name {
+            margin-bottom: 15px;
+        }
     }
 </style>
 </head>
@@ -57,8 +70,11 @@
     const canvas = document.getElementById("bg");
     const ctx = canvas.getContext("2d");
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
 
     const particles = [];
 
@@ -85,6 +101,7 @@
     }
 
     function init() {
+        particles.length = 0;
         for (let i = 0; i < 100; i++) {
             particles.push(new Particle());
         }
@@ -104,10 +121,9 @@
     animate();
 
     window.addEventListener("resize", () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        resizeCanvas();
+        init();
     });
 </script>
 </body>
 </html>
-

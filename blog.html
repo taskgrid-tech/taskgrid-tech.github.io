@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog & Insights - TaskGrid Technologies</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Grid Background */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -2;
+            filter: blur(0.5px);
+        }
+
+        /* Animated gradient overlay */
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(138, 43, 226, 0.1) 0%, 
+                rgba(30, 144, 255, 0.1) 25%, 
+                rgba(255, 20, 147, 0.1) 50%, 
+                rgba(0, 191, 255, 0.1) 75%, 
+                rgba(138, 43, 226, 0.1) 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 5%;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            box-shadow: 0 2px 20px rgba(138, 43, 226, 0.3);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #8a2be2, #1e90ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #8a2be2;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(45deg, #8a2be2, #1e90ff);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 150px 5% 100px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(30, 144, 255, 0.1));
+        }
+
+        .page-header h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #8a2be2, #1e90ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.3rem;
+            color: #cccccc;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 80px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #ffffff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Blog Grid */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .blog-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .blog-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .blog-card:hover::before {
+            left: 100%;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(138, 43, 226, 0.3);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #8a2be2, #1e90ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .blog-content {
+            padding: 2rem;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #8a2be2;
+        }
+
+        .blog-category {
+            background: rgba(138, 43, 226, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .blog-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .blog-card p {
+            color: #cccccc;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .read-more {
+            color: #8a2be2;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: #1e90ff;
+        }
+
+        /* Featured Post */
+        .featured-post {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 80px 5%;
+            margin: 50px 0;
+        }
+
+        .featured-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .featured-text h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .featured-text p {
+            color: #cccccc;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #8a2be2, #1e90ff);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #8a2be2, #1e90ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(138, 43, 226, 0.6);
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 80px 5%;
+            text-align: center;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 2rem auto 0;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            color: #ffffff;
+            backdrop-filter: blur(10px);
+        }
+
+        .newsletter-form input:focus {
+            outline: none;
+            border-color: #8a2be2;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+        }
+
+        .newsletter-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #8a2be2, #1e90ff);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 3rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #8a2be2;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #cccccc;
+            text-decoration: none;
+            line-height: 1.8;
+        }
+
+        .footer-section a:hover {
+            color: #8a2be2;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            color: #888888;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .featured-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .section {
+                padding: 50px 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Grid Background -->
+    <div class="grid-background"></div>
+    <div class="gradient-overlay"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">TaskGrid Technologies</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#services">Services</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#clients">Clients</a></li>
+                <li><a href="careers.html">Careers</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="index.html#enquiry">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Blog & Insights</h1>
+        <p>Stay ahead of the curve with our latest thoughts on technology, innovation, and the future of work. Discover insights from our expert team and industry leaders.</p>
+    </section>
+
+    <!-- Featured Post -->
+    <section class="featured-post">
+        <div class="featured-content">
+            <div class="featured-text">
+                <h3>The Future of Workflow Automation</h3>
+                <p>Discover how AI-powered automation is revolutionizing business processes and creating unprecedented efficiency gains. Learn about the latest trends, best practices, and real-world implementations that are shaping the future of work.</p>
+                <a href="#" class="cta-button">Read Full Article</a>
+            </div>
+            <div class="featured-image">📊</div>
+        </div>
+    </section>
+
+    <!-- Blog Posts -->
+    <section class="section">
+        <h2>Latest Articles</h2>
+        <div class="blog-grid">
+            <article class="blog-card">
+                <div class="blog-image">🚀</div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span class="blog-category">Technology</span>
+                        <span>Dec 15, 2024</span>
+                    </div>
+                    <h3>Building Scalable Microservices Architecture</h3>
+                    <p>Learn how to design and implement microservices that can handle millions of requests while maintaining reliability and performance.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-image">🔒</div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span class="blog-category">Security</span>
+                        <span>Dec 12, 2024</span>
+                    </div>
+                    <h3>Zero Trust Security in Modern Applications</h3>
+                    <p>Explore the principles of zero trust security and how to implement robust security measures in your software architecture.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-image">☁️</div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span class="blog-category">Cloud</span>
+                        <span>Dec 10, 2024</span>
+                    </div>
+                    <h3>Cloud Migration Strategies for Enterprise</h3>
+                    <p>A comprehensive guide to planning and executing successful cloud migrations for large-scale enterprise applications.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-image">🤖</div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span class="blog-category">AI/ML</span>
+                        <span>Dec 8, 2024</span>
+                    </div>
+                    <h3>Integrating AI into Business Workflows</h3>
+                    <p>Discover practical approaches to incorporating artificial intelligence and machine learning into existing business processes.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-image">📱</div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span class="blog-category">Mobile</span>
+                        <span>Dec 5, 2024</span>
+                    </div>
+                    <h3>Cross-Platform Mobile Development Trends</h3>
+                    <p>Stay updated with the latest trends in cross-platform mobile development and choose the right framework for your project.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </article>
+
+            <article class="blog-card">
+                <div class="blog-image">📈</div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span class="blog-category">Business</span>
+                        <span>Dec 3, 2024</span>
+                    </div>
+                    <h3>Digital Transformation Success Stories</h3>
+                    <p>Real-world case studies of successful digital transformation initiatives and the lessons learned from each implementation.</p>
+                    <a href="#" class="read-more">Read More →</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Newsletter Signup -->
+    <section class="newsletter">
+        <div class="section">
+            <h2>Stay Updated</h2>
+            <p>Subscribe to our newsletter and never miss our latest insights, tutorials, and industry updates.</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit" class="newsletter-btn">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TaskGrid Technologies</h3>
+                <p>Where Tasks Flow with Precision</p>
+                <p>Transforming businesses through innovative software solutions that streamline workflows and amplify productivity.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <p><a href="index.html#services">Custom Software Development</a></p>
+                <p><a href="index.html#services">Workflow Automation</a></p>
+                <p><a href="index.html#services">Data Analytics</a></p>
+                <p><a href="index.html#services">Cloud Solutions</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <p><a href="index.html#about">About Us</a></p>
+                <p><a href="careers.html">Careers</a></p>
+                <p><a href="blog.html">Blog</a></p>
+                <p><a href="privacy.html">Privacy Policy</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p>📧 tanishq.rawat@taskgrid.in</p>
+                <p>📞 +1 (555) 123-4567</p>
+                <p>📍 49 Greater Ratan Gold, Ujjain, MP 456001</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TaskGrid Technologies. All rights reserved. | <a href="privacy.html">Privacy Policy</a> | <a href="privacy.html">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Parallax scrolling effect
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const gridBg = document.querySelector('.grid-background');
+            gridBg.style.transform = `translateY(${scrolled * 0.2}px)`;
+        });
+
+        // Blog card animations
+        document.querySelectorAll('.blog-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Newsletter form submission
+        document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            alert('Thank you for subscribing! You will receive our latest updates at ' + email);
+            this.reset();
+        });
+
+        // Read more button interactions
+        document.querySelectorAll('.read-more').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('This would navigate to the full article. Feature coming soon!');
+            });
+        });
+
+        // Featured article button
+        document.querySelector('.featured-post .cta-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('This would navigate to the full featured article. Feature coming soon!');
+        });
+    </script>
+</body>
+</html>

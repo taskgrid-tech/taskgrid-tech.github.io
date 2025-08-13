@@ -74,11 +74,17 @@
             top: 0;
             width: 100%;
             padding: 1rem 5%;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
+            background: transparent;
             z-index: 1000;
-            box-shadow: 0 2px 20px rgba(138, 43, 226, 0.3);
+            transition: all 0.3s ease;
+            border-bottom: none;
+            animation: navbarFadeIn 1.2s cubic-bezier(.4,2.08,.55,.44);
         }
+            .nav-hidden {
+                transform: translateY(-100%);
+                opacity: 0;
+                pointer-events: none;
+            }
 
         .nav-container {
             display: flex;
@@ -89,12 +95,18 @@
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: bold;
-            background: linear-gradient(45deg, #8a2be2, #1e90ff);
+            background: linear-gradient(90deg, #8a2be2, #1e90ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            letter-spacing: 1px;
+            transition: transform 0.3s cubic-bezier(.4,2.08,.55,.44);
+            cursor: pointer;
+        }
+        .logo:hover {
+            transform: scale(1.07) rotate(-2deg);
         }
 
         .nav-links {
@@ -104,25 +116,31 @@
         }
 
         .nav-links a {
-            color: #ffffff;
+            color: #8a2be2;
+            background: linear-gradient(90deg, #8a2be2, #1e90ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: text-decoration 0.3s, transform 0.3s;
             position: relative;
+            font-weight: bold;
+            font-size: 1.08rem;
         }
 
         .nav-links a:hover {
-            color: #8a2be2;
+            transform: scale(1.08);
         }
 
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: -5px;
             left: 0;
+            bottom: -5px;
             width: 0;
-            height: 2px;
-            background: linear-gradient(45deg, #8a2be2, #1e90ff);
-            transition: width 0.3s ease;
+            height: 2.5px;
+            background: #8a2be2;
+            transition: width 0.4s cubic-bezier(.4,2.08,.55,.44);
         }
 
         .nav-links a:hover::after {
@@ -349,6 +367,20 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            .logo {
+                display: none;
+            }
+            .nav-container {
+                flex-direction: row;
+                position: relative;
+            }
+            .hamburger {
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                margin-left: 0;
+            }
             .page-header h1 {
                 font-size: 2.5rem;
             }
@@ -448,6 +480,8 @@
     </style>
 </head>
 <body>
+    <!-- <button id="goToTopBtn" aria-label="Go to top" title="Go to top">&#8679;</button> -->
+        
     <div class="grid-background"></div>
     <div class="gradient-overlay"></div>
 
@@ -702,6 +736,28 @@
             hamburger.classList.toggle('active');
             navLinks.classList.toggle('open');
         });
+            // Hide/show navbar on scroll direction
+            let lastScrollY = window.pageYOffset;
+            let ticking = false;
+            function handleNavbarScroll() {
+                const nav = document.querySelector('nav');
+                const currentScrollY = window.pageYOffset;
+                if (currentScrollY > lastScrollY) {
+                    // Scrolling down
+                    nav.classList.add('nav-hidden');
+                } else {
+                    // Scrolling up
+                    nav.classList.remove('nav-hidden');
+                }
+                lastScrollY = currentScrollY;
+                ticking = false;
+            }
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(handleNavbarScroll);
+                    ticking = true;
+                }
+            });
         // Close menu on link click (mobile)
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', function() {
@@ -800,6 +856,28 @@
             const scrolled = window.pageYOffset;
             const gridBg = document.querySelector('.grid-background');
             gridBg.style.transform = `translateY(${scrolled * 0.2}px)`;
+        });
+        // Hamburger menu toggle
+        // const hamburger = document.getElementById('hamburger');
+        // const navLinks = document.getElementById('navLinks');
+        // hamburger.addEventListener('click', function() {
+        //     hamburger.classList.toggle('active');
+        //     navLinks.classList.toggle('open');
+        // });
+        // Close menu on link click (mobile)
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('open');
+                }
+            });
+        });
+        // Keyboard accessibility for hamburger
+        hamburger.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                hamburger.click();
+            }
         });
     </script>
 </body>

@@ -223,6 +223,13 @@ export default async function JobPage({ params }: JobPageProps) {
   )
 }
 
+// Generate static params for all job pages at build time
+export async function generateStaticParams() {
+  return Object.keys(jobData).map((jobId) => ({
+    jobId: jobId,
+  }))
+}
+
 // Generate metadata for the page
 export async function generateMetadata({ params }: JobPageProps) {
   const { jobId } = await params

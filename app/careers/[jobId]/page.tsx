@@ -130,7 +130,7 @@ export default async function JobPage({ params }: JobPageProps) {
   return (
     <main className="bg-white">
       <SiteHeader />
-      <div className="px-12 py-14 lg:px-24 xl:px-32">
+      <div className="px-4 py-8 sm:px-6 lg:px-12 xl:px-24 2xl:px-32 lg:py-14">
         {/* Back Button */}
         <div className="mb-6">
           <Link
@@ -144,15 +144,15 @@ export default async function JobPage({ params }: JobPageProps) {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Job Details Column */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 order-1">
             {/* Job Header */}
             <div className="border-b border-slate-200 pb-6">
               <div className="flex items-start justify-between">
                 <div>
-                  <h1 className="text-3xl font-bold text-slate-900">{job.title}</h1>
-                  <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-slate-600">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">{job.title}</h1>
+                  <div className="mt-2 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2 sm:gap-4 text-sm text-slate-600">
                     <span className="flex items-center gap-1">
                       <span className="font-medium">Job ID:</span> {job.id}
                     </span>
@@ -211,8 +211,8 @@ export default async function JobPage({ params }: JobPageProps) {
           </div>
 
           {/* Application Form Column */}
-          <div className="lg:col-span-1">
-            <div id="apply" className="sticky top-8">
+          <div className="lg:col-span-1 order-2">
+            <div id="apply" className="lg:sticky lg:top-8">
               <JobApplication jobTitle={job.title} jobId={job.id} />
             </div>
           </div>

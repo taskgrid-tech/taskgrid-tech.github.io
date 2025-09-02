@@ -30,7 +30,7 @@ export default function CareersPage() {
   return (
     <main className="bg-white">
       <SiteHeader />
-      <section className="px-12 py-14 lg:px-24 xl:px-32">
+      <section className="px-4 py-8 sm:px-6 lg:px-12 xl:px-24 2xl:px-32 lg:py-14">
         <h1 className="text-2xl font-semibold text-slate-900">Careers</h1>
         <p className="mt-2 max-w-2xl text-slate-600">
           Join TaskGrid Technologies and help build precise, reliable systems that make work flow.
@@ -38,11 +38,11 @@ export default function CareersPage() {
 
         <div className="mt-6 space-y-4">
           {roles.map((role) => (
-            <div key={role.title} className="rounded-lg border border-slate-200 p-6 transition-shadow hover:shadow-md">
-              <div className="flex items-start justify-between">
+            <div key={role.title} className="rounded-lg border border-slate-200 p-4 sm:p-6 transition-shadow hover:shadow-md">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div className="flex-1">
                   <h2 className="text-lg font-semibold text-slate-900">{role.title}</h2>
-                  <div className="mt-1 flex items-center gap-4 text-sm text-slate-600">
+                  <div className="mt-1 flex flex-wrap items-center gap-2 sm:gap-4 text-sm text-slate-600">
                     <span className="inline-flex items-center gap-1">
                       <span className="w-2 h-2 bg-emerald-500 rounded-full" />
                       {role.type}
@@ -56,16 +56,16 @@ export default function CareersPage() {
                     {role.description}
                   </p>
                 </div>
-                <div className="ml-6 flex gap-3">
+                <div className="flex flex-col sm:flex-row sm:ml-6 gap-2 sm:gap-3">
                   <Link
                     href={`/careers/${role.slug}`}
-                    className="inline-flex items-center justify-center rounded-md bg-slate-100 px-4 py-2 text-sm font-medium text-slate-900 transition-colors hover:bg-slate-200"
+                    className="inline-flex items-center justify-center rounded-md bg-slate-100 px-4 py-2 text-sm font-medium text-slate-900 transition-colors hover:bg-slate-200 text-center"
                   >
                     View Details
                   </Link>
                   <Link
                     href={`/careers/${role.slug}#apply`}
-                    className="inline-flex items-center justify-center rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-sky-700"
+                    className="inline-flex items-center justify-center rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-sky-700 text-center"
                   >
                     Apply Now
                   </Link>

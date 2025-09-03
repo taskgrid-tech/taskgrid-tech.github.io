@@ -7,24 +7,18 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden bg-white">
       <AnimatedGridBackground />
-      <div className="px-6 py-16 md:py-24">
+      <div className="pl-6 pr-6 py-16 md:py-24 lg:pl-12 xl:pl-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Content Column */}
           <div className="max-w-2xl">
-          {/* add logo next to tagline for brand presence */}
-          <div className="flex items-center gap-3">
-            <Image
-              src="/images/taskgrid-logo.png"
-              alt="TaskGrid logo"
-              width={40}
-              height={40}
-              className="h-10 w-10"
-              priority
-            />
-            <span className="text-xs font-medium text-slate-600">Where task flows with precision.</span>
+          {/* Styled tagline without logo */}
+          <div className="mb-6">
+            <span className="inline-block px-3 py-1 text-base font-medium text-sky-700 bg-sky-50 rounded-full border border-sky-200">
+              Where Tasks Flow with Precision
+            </span>
           </div>
-          {/* insert logo row under the grid background */}
-          <h1 className="mt-4 text-balance text-4xl font-semibold leading-tight text-slate-900 md:text-5xl">
+          
+          <h1 className="text-balance text-4xl font-semibold leading-tight text-slate-900 md:text-5xl">
             TaskGrid Technologies
           </h1>
           <p className="mt-3 text-pretty text-slate-600 md:text-lg">

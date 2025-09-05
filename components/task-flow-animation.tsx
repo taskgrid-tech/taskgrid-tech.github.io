@@ -239,19 +239,19 @@ export function TaskFlowAnimation() {
       </div>
 
       {/* Legend */}
-      <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-sm border border-slate-200 slide-in">
-        <h3 className="text-xs font-semibold text-slate-700 mb-2 border-b border-slate-200 pb-1">Task States</h3>
-        <div className="text-xs text-slate-600 space-y-2">
-          <div className="flex items-center gap-2">
-            <span className="text-slate-400 text-sm">○</span>
+      <div className="absolute bottom-4 right-4 bg-white/95 backdrop-blur-sm rounded-lg p-6 shadow-lg border border-slate-200 slide-in min-w-[180px]">
+        <h3 className="text-sm font-semibold text-slate-700 mb-3 border-b border-slate-200 pb-2">Task States</h3>
+        <div className="text-sm text-slate-600 space-y-3">
+          <div className="flex items-center gap-3">
+            <span className="text-slate-400 text-lg font-medium">○</span>
             <span>Pending Task</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-sky-500 text-sm">◐</span>
+          <div className="flex items-center gap-3">
+            <span className="text-sky-500 text-lg font-medium">◐</span>
             <span>Active Task</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-emerald-500 text-sm">●</span>
+          <div className="flex items-center gap-3">
+            <span className="text-emerald-500 text-lg font-medium">●</span>
             <span>Complete Task</span>
           </div>
         </div>
